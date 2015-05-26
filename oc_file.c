@@ -7,7 +7,10 @@ typedef struct	file
 	struct file *suivant;
 }				File;
 
-// Implementation
+/*
+** Implementation
+*/
+
 void	file_enqueue(File *p_file, int donnee)
 {
 	File *p_nouveau = malloc(sizeof (File));
@@ -29,11 +32,15 @@ void	file_enqueue(File *p_file, int donnee)
 	else
 		printf("fuckof\n");
 }
+/*
+** Retrait d'un element
+*/
 
-// Retrait d'un element
 int		file_dequeue(File **p_file)
 {
-	int ret = -1;
+	int ret;
+		
+	ret = -1;
 	if (*p_file != NULL)
 	{
 		File *p_tmp = (*p_file)->suivant;
@@ -44,8 +51,10 @@ int		file_dequeue(File **p_file)
 	}
 	return (ret);
 }
+/*
+** Vidage de la file
+*/
 
-// Vidage de la file
 void	file_clear(File **p_file)
 {
 	while (*p_file != NULL)
@@ -54,7 +63,7 @@ void	file_clear(File **p_file)
 	}
 }
 
-void D_printFile(File *test)
+void	D_printFile(File *test)
 {
 	File *temp;
 
