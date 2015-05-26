@@ -29,6 +29,8 @@ void	file_enqueue(File **p_file, int donnee)
 			p_tmp->suivant = p_nouveau;
 		}
 	}
+	else
+		printf("fuckof\n");
 }
 
 // Retrait d'un element
@@ -62,7 +64,7 @@ void D_printFile(File *test)
 	temp = test;
 	while (temp != NULL)
 	{
-		printf("%i\n", temp->donnee);
+		//printf("%i\n", temp->donnee);
 		temp = temp->suivant;
 	}
 }
@@ -71,7 +73,9 @@ int		main(void)
 {
 	File *test;
 
-	test = malloc (sizeof *test);
+	test = malloc (sizeof (File));
+	if (test == NULL)
+		printf("failed malloc\n");
 	test[0].donnee = 1;
 	//test[1].donnee = 40000;
 	//test[0].suivant = &test[1];
