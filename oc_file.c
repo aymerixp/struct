@@ -73,8 +73,11 @@ void D_printFile(File *test)
 int		main(void)
 {
 	File *test;
-	test = malloc(sizeof (File));
+	test = malloc(sizeof (File) * 2);
 	test[0].donnee = 5;
+	test[1].donnee = 7;
+	test[0].suivant = &(test[1]);
+	test[1].suivant = NULL;
 	D_printFile(test);
 	
 
