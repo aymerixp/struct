@@ -1,4 +1,5 @@
 #include <stdlib.h>
+#include <stdio.h>
 
 typedef struct	file
 {
@@ -54,7 +55,28 @@ void	file_clear(File **p_file)
 	}
 }
 
+void D_printFile(File *test)
+{
+	File *temp;
+
+	temp = test;
+	while (temp != NULL)
+	{
+		printf("%i\n", temp->donnee);
+		temp = temp->suivant;
+	}
+}
+
 int		main(void)
 {
+	File *test;
+
+	test = malloc (sizeof *test);
+	test[0].donnee = 1;
+	//test[1].donnee = 40000;
+	//test[0].suivant = &test[1];
+	file_enqueue(&test, 5);
+	//D_printFile(test);
+
 	return (0);
 }
