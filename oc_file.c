@@ -10,7 +10,7 @@ typedef struct	file
 // Implementation
 void	file_enqueue(File **p_file, int donnee)
 {
-	File *p_nouveau = malloc(sizeof *p_nouveau);
+	File *p_nouveau = malloc(sizeof (File));
 	if (p_nouveau != NULL)
 	{
 		p_nouveau->suivant = NULL;
@@ -64,7 +64,7 @@ void D_printFile(File *test)
 	temp = test;
 	while (temp != NULL)
 	{
-		//printf("%i\n", temp->donnee);
+		printf("%i\n", temp->donnee);
 		temp = temp->suivant;
 	}
 }
@@ -73,14 +73,12 @@ int		main(void)
 {
 	File *test;
 
-	test = malloc (sizeof (File));
-	if (test == NULL)
-		printf("failed malloc\n");
-	test[0].donnee = 1;
-	//test[1].donnee = 40000;
-	//test[0].suivant = &test[1];
+	test = NULL;
 	file_enqueue(&test, 5);
+	file_enqueue(&test, 6);
+	file_enqueue(&test, 7);
 	D_printFile(test);
+	
 
 	return (0);
 }
