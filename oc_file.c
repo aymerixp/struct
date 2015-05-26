@@ -72,11 +72,8 @@ void D_printFile(File *test)
 int		main(void)
 {
 	File *test;
-
-	test = NULL;
-	file_enqueue(&test, 5);
-	file_enqueue(&test, 6);
-	file_enqueue(&test, 7);
+	test = malloc(sizeof (File));
+	test[0].donnee = 5;
 	D_printFile(test);
 	
 
