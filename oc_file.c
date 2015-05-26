@@ -62,6 +62,7 @@ void D_printFile(File *test)
 	File *temp;
 
 	temp = test;
+	*temp = *test;
 	while (temp != NULL)
 	{
 		printf("%i\n", temp->donnee);
