@@ -76,7 +76,7 @@ int		main(void)
 	//test[1].donnee = 40000;
 	//test[0].suivant = &test[1];
 	file_enqueue(&test, 5);
-	//D_printFile(test);
+	D_printFile(test);
 
 	return (0);
 }
