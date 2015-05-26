@@ -1,3 +1,3 @@
 # struct
 
-mon premier git collaboration ! trop d'émotions
+mon premier git collaboratif ! trop d'émotions
