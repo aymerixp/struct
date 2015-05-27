@@ -8,23 +8,27 @@ typedef struct	file
 }				File;
 
 // Implementation
-void	file_enqueue(File *p_file, int donnee)
+void	file_enqueue(File **p_file, int donnee)
 {
-	File *p_nouveau = malloc(sizeof (File));
+	File *p_nouveau;
+	p_nouveau = malloc(sizeof *p_nouveau);
 	if (p_nouveau != NULL)
 	{
 		p_nouveau->suivant = NULL;
 		p_nouveau->donnee = donnee;
-		/*if (*p_file == NULL)
+		if (*p_file == NULL)
 		{
 			*p_file = p_nouveau;
-		}*/
-			File *p_tmp = p_file;
+		}
+		else
+		{
+			File *p_tmp = *p_file;
 			while (p_tmp->suivant != NULL)
 			{
 				p_tmp = p_tmp->suivant;
 			}
 			p_tmp->suivant = p_nouveau;
+		}
 	}
 	else
 		printf("fuckof\n");
@@ -72,7 +76,7 @@ int		main(void)
 	test = malloc(sizeof (File));
 	test[0].donnee = 5;
 	test[0].suivant = NULL;
-	file_enqueue(NULL, 7);
+	file_enqueue(&test, 7);
 	D_printFile(test);
 	
 
