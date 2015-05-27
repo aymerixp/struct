@@ -55,7 +55,33 @@ int pile_peek(Pile *p_pile)
 	return (ret);
 }
 
+void	print_pile(Pile *pile)
+{
+	Pile *tmp;
+	int i;
+
+	i = 0;
+	tmp = pile;
+	while (tmp != NULL)
+	{
+		ft_putnbr(i++);
+		ft_putstr(" : ");
+		ft_putnbr(tmp->donnee);
+		ft_putchar('\n');
+		tmp = tmp->precedent;
+	}
+}
+
 int		main(void)
 {
+	Pile *pointeur_pile;
+	pointeur_pile = NULL;
+
+	pile_push(&pointeur_pile, 40);
+	pile_push(&pointeur_pile, 50);
+	pile_push(&pointeur_pile, 60);
+	pile_push(&pointeur_pile, 70);
+	print_pile(pointeur_pile);
+
 	return (0);
 }

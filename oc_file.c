@@ -3,11 +3,13 @@
 
 typedef struct	file
 {
-	int donnee;
+	int			donnee;
 	struct file *suivant;
 }				File;
 
-// Implementation
+/*
+ * Implementation
+ */
 void	file_enqueue(File **p_file, int donnee)
 {
 	File *p_nouveau;
@@ -22,7 +24,8 @@ void	file_enqueue(File **p_file, int donnee)
 		}
 		else
 		{
-			File *p_tmp = *p_file;
+			File *p_tmp;
+			p_tmp = *p_file;
 			while (p_tmp->suivant != NULL)
 			{
 				p_tmp = p_tmp->suivant;
@@ -34,7 +37,9 @@ void	file_enqueue(File **p_file, int donnee)
 		printf("fuckof\n");
 }
 
-// Retrait d'un element
+/*
+ * Retrait d'un element
+ */
 int		file_dequeue(File **p_file)
 {
 	int ret = -1;
@@ -49,7 +54,9 @@ int		file_dequeue(File **p_file)
 	return (ret);
 }
 
-// Vidage de la file
+/*
+ * Vider la file
+ */
 void	file_clear(File **p_file)
 {
 	while (*p_file != NULL)
@@ -72,14 +79,27 @@ void D_printFile(File *test)
 
 int		main(void)
 {
-	File *test;
-	if (!(test = malloc(sizeof (File))))
-		return (NULL);
-	test[0].donnee = 5;
-	test[0].suivant = NULL;
-	file_enqueue(&test, 7);
-	D_printFile(test);
-	
+	File *pointeur_file;
+
+	//pointeur_file = malloc(sizeof(File) * 2);
+	pointeur_file = NULL;
+	/*
+	pointeur_file[0].donnee = 5;
+	pointeur_file[0].suivant = &pointeur_file[1];
+	pointeur_file[1].donnee = 594949;
+	pointeur_file[1].suivant = NULL;
+	*/
+
+	file_enqueue(&pointeur_file, 7000);
+	if (pointeur_file->donnee == file_dequeue(&pointeur_file))
+		printf("pointeur file delete ok\n");
+
+	file_enqueue(&pointeur_file, 7);
+	file_enqueue(&pointeur_file, 799);
+	file_enqueue(&pointeur_file, 667);
+
+	D_printFile(pointeur_file);
+	file_clear(&pointeur_file);
 
 	return (0);
 }
