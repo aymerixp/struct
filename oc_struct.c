@@ -25,7 +25,8 @@ int estVide(t_element *liste)
 t_element *ajouterEnTete(t_element *liste, int valeur)
 {
 	t_element *nouvelElement;
-	nouvelElement = malloc(sizeof(t_element));
+	if (!(nouvelElement = malloc(sizeof(t_element))))
+		return (NULL);
 	nouvelElement->val = valeur;
 	nouvelElement->next = liste;
 
@@ -36,7 +37,8 @@ t_element *ajouterEnTete(t_element *liste, int valeur)
 t_element *ajouterEnFin(t_element *liste, int valeur)
 {
 	t_element *nouvelElement;
-	nouvelElement = malloc(sizeof(t_element));
+	if (!(nouvelElement = malloc(sizeof(t_element))))
+		return (NULL);
 	nouvelElement->val = valeur;
 	nouvelElement->next = NULL;
 	if (liste == NULL)
