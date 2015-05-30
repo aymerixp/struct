@@ -1,5 +1,5 @@
 /*
- * file = queue
+ * pile = stack
  */
 #include <stdlib.h>
 
