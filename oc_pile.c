@@ -1,3 +1,6 @@
+/*
+ * file = queue
+ */
 #include <stdlib.h>
 
 typedef struct	pile

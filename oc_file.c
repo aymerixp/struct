@@ -1,3 +1,6 @@
+/*
+ * pile = stack
+ */
 #include <stdlib.h>
 #include <stdio.h>
 
