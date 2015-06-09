@@ -310,44 +310,6 @@ size_t		dlist_length(t_dlist *p_list)
 	return (ret);
 }
 
-/* Rechercher un node selon sa valeur */
-t_node		*node_find(t_dlist *p_list, int data)
-{
-	t_node *ret = NULL;
-	if (p_list != NULL)
-	{
-		t_node *p_tmp = p_list->head;
-		int found = 0;
-		while (p_tmp != NULL && !found)
-		{
-			if (p_tmp->data == data)
-			{
-				ret = p_tmp;
-				found = 1;
-			}
-			else
-			{
-				p_tmp = p_tmp->next;
-			}
-		}
-	}
-	ft_putstr("j'ai trouve le node : ");
-	ft_putnbr(ret->data);
-	ft_putstr(" le node suivant est : ");
-	if (ret->next != NULL)
-		ft_putnbr(ret->next->data);
-	else
-		ft_putstr("NULL");
-	ft_putstr(" le node precedent est : ");
-	if (ret->prev != NULL)
-		ft_putnbr(ret->prev->data);
-	else
-		ft_putstr("NULL");
-	ft_putchar('\n');
-	dlist_remove_id(p_list, data);
-	return (ret);
-}
-
 /* Rechercher un element selon sa valeur */
 t_dlist		*dlist_find(t_dlist *p_list, int data)
 {
@@ -466,32 +428,6 @@ void		sa(t_dlist *p_list_a)
 	//ft_putnbr(tmp->tail->data);
 }
 
-/* prend le premier element au sommet de b et le met sur a */
-void		pa(t_dlist *p_list_a, t_dlist *p_list_b)
-{
-	dlist_append(p_list_a, p_list_b->tail->data);
-	dlist_remove_last(p_list_b);
-}
-
-/* prend le premier element au sommet de a et le met sur b */
-void		pb(t_dlist *p_list_a, t_dlist *p_list_b)
-{
-	/* /!\ append ou prepend */
-	//ft_putstr("start");
-	//ft_putnbr(dlist_find(p_list_a, 1)->head->data);
-	//ft_putstr("end");
-	dlist_append(p_list_b, p_list_a->tail->data);
-	node_find(p_list_a, p_list_a->tail->data);
-	//dlist_remove_last(p_list_a);
-}
-
-void		test_pb_remove(t_dlist *p_list_a, t_dlist *p_list_b)
-{
-	dlist_append(p_list_b, p_list_a->tail->data);
-	p_list_a->head = NULL;
-	p_list_b->length--;
-}
-
 /* rotate a */
 /* le dernier devient le premier */
 t_dlist		*rotate(t_dlist *p_list)
@@ -527,6 +463,19 @@ t_dlist		*rotate_inverse(t_dlist *p_list)
 	return (p_list);
 }
 
+void		push(t_dlist *list_a, t_dlist *list_b)
+{
+	dlist_append(list_b, list_a->tail->data);
+	if (list_a->head->next == NULL)
+	{
+		list_a->tail = NULL;
+		list_a->head = NULL;
+		list_a->length--;
+	}
+	else
+		dlist_remove_last(list_a);
+}
+
 void		push_swap(t_dlist *p_list_a, t_dlist *p_list_b)
 {
 	if (p_list_a->head->data > p_list_b->head->data)
@@ -557,29 +506,56 @@ int			main(int ac, char **av)
 	dlist_display(list_b);
 
 	sa(list_a);
-	pb(list_a, list_b);
-	pb(list_a, list_b);
-	pb(list_a, list_b);
-	rotate_inverse(list_a); // ra
-	rotate_inverse(list_b); // rb
-	rotate(list_a); // rra
-	rotate(list_b); // rrb
+	ft_putendl("sa :");
+	ft_putstr("liste a : ");
+	dlist_display(list_a);
+	ft_putstr("liste b : ");
+	dlist_display(list_b);
+	//rotate_inverse(list_a); // ra
+	push(list_a, list_b);
+	ft_putendl("pb :");
+	ft_putstr("liste a : ");
+	dlist_display(list_a);
+	ft_putstr("liste b : ");
+	dlist_display(list_b);
+	push(list_a, list_b);
+	ft_putendl("pb :");
+	ft_putstr("liste a : ");
+	dlist_display(list_a);
+	ft_putstr("liste b : ");
+	dlist_display(list_b);
+	push(list_a, list_b);
 	sa(list_a);
-	pb(list_b, list_a);
-	pb(list_b, list_a);
-	//pb(list_b, list_a);
-	//test_pb_remove(list_b, list_a);
-	//test_pb_remove(list_b, list_a);
-	//pb(list_b, list_a);
-	/* attention a pb quand il n'en reste qu'un a copier */
-	ft_putchar('\n');
-	ft_putstr("length list b : ");
-	ft_putnbr(list_b->length);
+	ft_putendl("sa :");
+	ft_putstr("liste a : ");
+	dlist_display(list_a);
+	ft_putstr("liste b : ");
+	dlist_display(list_b);
+	push(list_b, list_a);
+	ft_putendl("pa :");
+	ft_putstr("liste a : ");
+	dlist_display(list_a);
+	ft_putstr("liste b : ");
+	dlist_display(list_b);
+	push(list_b, list_a);
+	ft_putendl("pa :");
+	ft_putstr("liste a : ");
+	dlist_display(list_a);
+	ft_putstr("liste b : ");
+	dlist_display(list_b);
+	push(list_b, list_a);
+	ft_putendl("pa :");
+	ft_putstr("liste a : ");
+	dlist_display(list_a);
+	ft_putstr("liste b : ");
+	dlist_display(list_b);
+	//rotate_inverse(list_b); // rb
+	//rotate(list_a); // rra
+	//rotate(list_b); // rrb
 
 	ft_putchar('\n');
 	ft_putstr("liste a : ");
 	dlist_display(list_a);
 	ft_putstr("liste b : ");
 	dlist_display(list_b);
-	/* je peux creer la liste b dans la premiere fonction appele ? comme ca je n'en envoie qu'une ? */
 }
