@@ -476,12 +476,44 @@ void		push(t_dlist *list_a, t_dlist *list_b)
 		dlist_remove_last(list_a);
 }
 
+int			verif_order(t_dlist *p_list_a)
+{
+	t_node *tmp;
+	tmp = p_list_a->head;
+	while (tmp->next)
+	{
+		if (tmp->data > tmp->next->data)
+			tmp = tmp->next;
+		else
+			return (0);
+	}
+	return (1);
+}
+
 void		push_swap(t_dlist *p_list_a, t_dlist *p_list_b)
 {
-	if (p_list_a->head->data > p_list_b->head->data)
-		ft_putstr("le head de a est plus grand que le head de b");
-	else
-		ft_putstr("non");
+	// c'est fini quans p_list_a est decroissant et quand p_list_b est NULL
+	t_node *tmp;
+	tmp = p_list_a->head;
+	while (tmp != NULL)
+	{
+		// on utilise sa si la valeur de la tail est inferieure a la valeur precedente
+		if (p_list_a->tail->data > p_list_a->tail->prev->data)
+		{
+			// alors le dernier est plus grand que l'avant dernier
+			sa(p_list_a);
+			ft_putendl("sa ");
+		}
+		else
+			ft_putendl("ok");
+		ft_putnbr(tmp->data);
+		tmp = tmp->next;
+	}
+	ft_putchar('\n');
+	ft_putstr("liste a : ");
+	dlist_display(p_list_a);
+	ft_putstr("liste b : ");
+	dlist_display(p_list_b);
 }
 
 // attendu : sa pb pb pb sa pa pa pa
@@ -498,6 +530,18 @@ int			main(int ac, char **av)
 
 	while (i < ac)
 		list_a = dlist_prepend(list_a, ft_atoi(av[i++]));
+
+	ft_putchar('\n');
+	ft_putstr("liste a : ");
+	dlist_display(list_a);
+	ft_putstr("liste b : ");
+	dlist_display(list_b);
+
+	if (verif_order(list_a))
+		ft_putendl("ORDER OK");
+	else
+		ft_putendl("ORDER KO");
+	push_swap(list_a, list_b);
 
 	ft_putchar('\n');
 	ft_putstr("liste a : ");
@@ -525,6 +569,11 @@ int			main(int ac, char **av)
 	ft_putstr("liste b : ");
 	dlist_display(list_b);
 	push(list_a, list_b);
+	ft_putendl("pb :");
+	ft_putstr("liste a : ");
+	dlist_display(list_a);
+	ft_putstr("liste b : ");
+	dlist_display(list_b);
 	sa(list_a);
 	ft_putendl("sa :");
 	ft_putstr("liste a : ");
@@ -553,9 +602,14 @@ int			main(int ac, char **av)
 	//rotate(list_a); // rra
 	//rotate(list_b); // rrb
 
+	if (verif_order(list_a))
+		ft_putendl("ORDER OK");
+	else
+		ft_putendl("ORDER KO");
 	ft_putchar('\n');
 	ft_putstr("liste a : ");
 	dlist_display(list_a);
 	ft_putstr("liste b : ");
 	dlist_display(list_b);
+	push_swap(list_a, list_b);
 }
