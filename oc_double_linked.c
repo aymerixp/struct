@@ -35,6 +35,52 @@ t_dlist		*dlist_new(void)
 	return (p_new);
 }
 
+// si on push : le node a deja ete malloc !
+void		new_push(t_dlist *list_a, t_dlist *list_b, t_node *node)
+{
+	ft_putstr("new push : ");
+	ft_putnbr(node->data);
+	ft_putchar('\n');
+	if (list_b->tail == NULL)
+	{
+		node->prev = NULL;
+		list_b->head = node;
+		list_b->tail = node;
+		ft_putstr("NEW");
+	}
+	else
+	{
+		list_b->tail->next = node;
+		node->prev = list_b->tail;
+		list_b->tail = node;
+		ft_putstr("PUSH");
+	}
+	// append sur t_dlist
+	// suppression du node sur la liste ou il est
+	// si c'est le dernier node : suppression de la liste
+	//
+	// connaitre la position du node
+	if (node->next == NULL)
+	{
+		list_a->tail = node->prev;
+		list_a->tail->next = NULL;
+		ft_putendl("on est a la fin");
+	}
+	else if (node->prev == NULL)
+	{
+		list_a->head = node->next;
+		list_a->head->prev = NULL;
+		ft_putendl("on au debut");
+	}
+	else
+	{
+		node->next->prev = node->prev;
+		node->prev->next = node->next;
+		ft_putendl("otr");
+	}
+	list_a->length--;
+}
+
 /* Ajout en fin de liste */
 t_dlist		*dlist_append(t_dlist *p_list, int data)
 {
@@ -471,6 +517,7 @@ void		push(t_dlist *list_a, t_dlist *list_b)
 		list_a->tail = NULL;
 		list_a->head = NULL;
 		list_a->length--;
+		list_a = NULL;
 	}
 	else
 		dlist_remove_last(list_a);
@@ -495,25 +542,52 @@ void		push_swap(t_dlist *p_list_a, t_dlist *p_list_b)
 	// c'est fini quans p_list_a est decroissant et quand p_list_b est NULL
 	t_node *tmp;
 	tmp = p_list_a->head;
-	while (tmp != NULL)
-	{
-		// on utilise sa si la valeur de la tail est inferieure a la valeur precedente
-		if (p_list_a->tail->data > p_list_a->tail->prev->data)
+	// anti bug
+	//while (verif_order(p_list_a) == 0)
+	//{
+		while (tmp != NULL)
 		{
-			// alors le dernier est plus grand que l'avant dernier
-			sa(p_list_a);
-			ft_putendl("sa ");
+			// on utilise sa si la valeur de la tail est inferieure a la valeur precedente
+			if (p_list_a->tail->data > p_list_a->tail->prev->data)
+			{
+				// alors le dernier est plus grand que l'avant dernier
+				sa(p_list_a); // on arrange ca
+				ft_putendl("sa ");
+			}
+			//push(p_list_a, p_list_b);
+			ft_putstr("liste a : ");
+			dlist_display(p_list_a);
+			ft_putstr("liste b : ");
+			dlist_display(p_list_b);
+			// faire un push de node et pas un push de t_dlist
+			// on decalle en pushant sur l'autre liste
+			// si on est sur la queue de la liste a on repush tout dans l'autre sens puis on verifie si l'ordre est ok
+			if (tmp == p_list_a->tail)
+			{
+				/*
+				while (p_list_b != NULL)
+				{
+					push(p_list_b, p_list_a);
+				}
+				*/
+			}
+			tmp = tmp->next;
 		}
-		else
-			ft_putendl("ok");
-		ft_putnbr(tmp->data);
-		tmp = tmp->next;
-	}
+	//}
+	push(p_list_a, p_list_b);
+	push(p_list_a, p_list_b);
+	push(p_list_a, p_list_b);
+	push(p_list_a, p_list_b);
+	push(p_list_a, p_list_b);
 	ft_putchar('\n');
 	ft_putstr("liste a : ");
 	dlist_display(p_list_a);
 	ft_putstr("liste b : ");
 	dlist_display(p_list_b);
+	if (verif_order(p_list_a))
+		ft_putendl("ORDER OK");
+	else
+		ft_putendl("ORDER KO");
 }
 
 // attendu : sa pb pb pb sa pa pa pa
@@ -531,6 +605,22 @@ int			main(int ac, char **av)
 	while (i < ac)
 		list_a = dlist_prepend(list_a, ft_atoi(av[i++]));
 
+
+	ft_putchar('\n');
+	ft_putstr("liste a : ");
+	dlist_display(list_a);
+	ft_putstr("liste b : ");
+	dlist_display(list_b);
+	new_push(list_a, list_b, list_a->head);
+	new_push(list_a, list_b, list_a->head->next);
+	new_push(list_a, list_b, list_a->head->next->next);
+	new_push(list_a, list_b, list_a->head->next->next->next);
+	ft_putstr("------------->");
+	ft_putnbr(list_a->head->data);
+	/*
+	new_push(list_a, list_b, list_a->head->next->next->next->next);
+	new_push(list_a, list_b, list_a->head->next->next->next->next->next);
+	*/
 	ft_putchar('\n');
 	ft_putstr("liste a : ");
 	dlist_display(list_a);
@@ -541,8 +631,10 @@ int			main(int ac, char **av)
 		ft_putendl("ORDER OK");
 	else
 		ft_putendl("ORDER KO");
-	push_swap(list_a, list_b);
+	
+	//push_swap(list_a, list_b);
 
+	/*
 	ft_putchar('\n');
 	ft_putstr("liste a : ");
 	dlist_display(list_a);
@@ -610,6 +702,6 @@ int			main(int ac, char **av)
 	ft_putstr("liste a : ");
 	dlist_display(list_a);
 	ft_putstr("liste b : ");
-	dlist_display(list_b);
-	push_swap(list_a, list_b);
+	/dlist_display(list_b);
+	*/
 }
