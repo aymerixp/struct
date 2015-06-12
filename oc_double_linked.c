@@ -511,7 +511,7 @@ t_dlist		*rotate_inverse(t_dlist *p_list)
 
 void		push(t_dlist *list_a, t_dlist *list_b)
 {
-	dlist_append(list_b, list_a->tail->data);
+	dlist_prepend(list_b, list_a->tail->data);
 	if (list_a->head->next == NULL)
 	{
 		list_a->tail = NULL;
@@ -541,39 +541,69 @@ void		push_swap(t_dlist *p_list_a, t_dlist *p_list_b)
 {
 	// c'est fini quans p_list_a est decroissant et quand p_list_b est NULL
 	t_node *tmp;
-	tmp = p_list_a->head;
+	tmp = p_list_a->tail;
 	// anti bug
 	//while (verif_order(p_list_a) == 0)
 	//{
 		while (tmp != NULL)
 		{
 			// on utilise sa si la valeur de la tail est inferieure a la valeur precedente
+			/*
 			if (p_list_a->tail->data > p_list_a->tail->prev->data)
 			{
 				// alors le dernier est plus grand que l'avant dernier
 				sa(p_list_a); // on arrange ca
 				ft_putendl("sa ");
 			}
+			*/
 			//push(p_list_a, p_list_b);
+			/*
 			ft_putstr("liste a : ");
 			dlist_display(p_list_a);
 			ft_putstr("liste b : ");
 			dlist_display(p_list_b);
+			*/
 			// faire un push de node et pas un push de t_dlist
 			// on decalle en pushant sur l'autre liste
 			// si on est sur la queue de la liste a on repush tout dans l'autre sens puis on verifie si l'ordre est ok
-			if (tmp == p_list_a->tail)
+			//ft_putnbr(tmp->data);
+			ft_putchar('X');
+			ft_putnbr(p_list_a->tail->data);
+			if (p_list_a->length > 2 && p_list_a->tail->data > p_list_a->tail->prev->data)
 			{
-				/*
-				while (p_list_b != NULL)
-				{
-					push(p_list_b, p_list_a);
-				}
-				*/
+				sa(p_list_a);
+				ft_putstr("sa");
 			}
-			tmp = tmp->next;
+			ft_putchar(' ');
+			push(p_list_a, p_list_b);
+			ft_putstr("pa");
+			tmp = tmp->prev;
 		}
+	color_str("=========================\n", "36;7");
+	ft_putstr("liste a : ");
+	dlist_display(p_list_a);
+	ft_putstr("liste b : ");
+	dlist_display(p_list_b);
+	tmp = p_list_b->tail;
+	while (tmp != NULL)
+	{
+		ft_putnbr(tmp->data);
+		push(p_list_b, p_list_a);
+			ft_putstr("pb");
+		tmp = tmp->prev;
+	}
+
 	//}
+	/*
+	color_str("===========copie sur la liste b==============\n", "36;7");
+	if (p_list_a->tail->data > p_list_a->tail->prev->data)
+	{
+		ft_putnbr(p_list_a->tail->data);
+		ft_putstr(" > ");
+		ft_putnbr(p_list_a->tail->prev->data);
+	}
+	*/
+	/*
 	push(p_list_a, p_list_b);
 	push(p_list_a, p_list_b);
 	push(p_list_a, p_list_b);
@@ -584,13 +614,24 @@ void		push_swap(t_dlist *p_list_a, t_dlist *p_list_b)
 	dlist_display(p_list_a);
 	ft_putstr("liste b : ");
 	dlist_display(p_list_b);
-	if (verif_order(p_list_a))
-		ft_putendl("ORDER OK");
-	else
-		ft_putendl("ORDER KO");
+	push(p_list_b, p_list_a);
+	push(p_list_b, p_list_a);
+	push(p_list_b, p_list_a);
+	push(p_list_b, p_list_a);
+	push(p_list_b, p_list_a);
+*/
+
+	if(p_list_b->length == 0)
+	{
+		if (verif_order(p_list_a))
+			color_str("ORDER OK\n", "32;7");
+		else
+			color_str("ORDER KO\n", "31;7");
+	}
 }
 
 // attendu : sa pb pb pb sa pa pa pa
+// gcc -Wall -Werror -Wextra oc_double_linked.c ../libraire/libft.a && ./a.out 2 1 3 6 5 8
 int			main(int ac, char **av)
 {
 	int i;
@@ -606,6 +647,7 @@ int			main(int ac, char **av)
 		list_a = dlist_prepend(list_a, ft_atoi(av[i++]));
 
 
+	/*
 	ft_putchar('\n');
 	ft_putstr("liste a : ");
 	dlist_display(list_a);
@@ -617,91 +659,25 @@ int			main(int ac, char **av)
 	new_push(list_a, list_b, list_a->head->next->next->next);
 	ft_putstr("------------->");
 	ft_putnbr(list_a->head->data);
+	*/
+
 	/*
 	new_push(list_a, list_b, list_a->head->next->next->next->next);
 	new_push(list_a, list_b, list_a->head->next->next->next->next->next);
 	*/
+	color_str("=============juste apres enregistrement :====", "36;7");
 	ft_putchar('\n');
 	ft_putstr("liste a : ");
 	dlist_display(list_a);
 	ft_putstr("liste b : ");
 	dlist_display(list_b);
 
-	if (verif_order(list_a))
-		ft_putendl("ORDER OK");
-	else
-		ft_putendl("ORDER KO");
-	
-	//push_swap(list_a, list_b);
+	push_swap(list_a, list_b);
+	color_str("===========fin de push_swap()================", "36;7");
 
-	/*
 	ft_putchar('\n');
 	ft_putstr("liste a : ");
 	dlist_display(list_a);
 	ft_putstr("liste b : ");
 	dlist_display(list_b);
-
-	sa(list_a);
-	ft_putendl("sa :");
-	ft_putstr("liste a : ");
-	dlist_display(list_a);
-	ft_putstr("liste b : ");
-	dlist_display(list_b);
-	//rotate_inverse(list_a); // ra
-	push(list_a, list_b);
-	ft_putendl("pb :");
-	ft_putstr("liste a : ");
-	dlist_display(list_a);
-	ft_putstr("liste b : ");
-	dlist_display(list_b);
-	push(list_a, list_b);
-	ft_putendl("pb :");
-	ft_putstr("liste a : ");
-	dlist_display(list_a);
-	ft_putstr("liste b : ");
-	dlist_display(list_b);
-	push(list_a, list_b);
-	ft_putendl("pb :");
-	ft_putstr("liste a : ");
-	dlist_display(list_a);
-	ft_putstr("liste b : ");
-	dlist_display(list_b);
-	sa(list_a);
-	ft_putendl("sa :");
-	ft_putstr("liste a : ");
-	dlist_display(list_a);
-	ft_putstr("liste b : ");
-	dlist_display(list_b);
-	push(list_b, list_a);
-	ft_putendl("pa :");
-	ft_putstr("liste a : ");
-	dlist_display(list_a);
-	ft_putstr("liste b : ");
-	dlist_display(list_b);
-	push(list_b, list_a);
-	ft_putendl("pa :");
-	ft_putstr("liste a : ");
-	dlist_display(list_a);
-	ft_putstr("liste b : ");
-	dlist_display(list_b);
-	push(list_b, list_a);
-	ft_putendl("pa :");
-	ft_putstr("liste a : ");
-	dlist_display(list_a);
-	ft_putstr("liste b : ");
-	dlist_display(list_b);
-	//rotate_inverse(list_b); // rb
-	//rotate(list_a); // rra
-	//rotate(list_b); // rrb
-
-	if (verif_order(list_a))
-		ft_putendl("ORDER OK");
-	else
-		ft_putendl("ORDER KO");
-	ft_putchar('\n');
-	ft_putstr("liste a : ");
-	dlist_display(list_a);
-	ft_putstr("liste b : ");
-	/dlist_display(list_b);
-	*/
 }
