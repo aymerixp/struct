@@ -511,7 +511,7 @@ t_dlist		*rotate_inverse(t_dlist *p_list)
 
 void		push(t_dlist *list_a, t_dlist *list_b)
 {
-	dlist_prepend(list_b, list_a->tail->data);
+	dlist_prepend(list_b, list_a->tail->data); // ajoute en debut de liste
 	if (list_a->head->next == NULL)
 	{
 		list_a->tail = NULL;
@@ -542,58 +542,82 @@ void		push_swap(t_dlist *p_list_a, t_dlist *p_list_b)
 	// c'est fini quans p_list_a est decroissant et quand p_list_b est NULL
 	t_node *tmp;
 	tmp = p_list_a->tail;
-	// anti bug
-	//while (verif_order(p_list_a) == 0)
-	//{
-		while (tmp != NULL)
+	while (tmp != NULL)
+	{
+		// on utilise sa si la valeur de la tail est inferieure a la valeur precedente
+		/*
+		   if (p_list_a->tail->data > p_list_a->tail->prev->data)
+		   {
+		// alors le dernier est plus grand que l'avant dernier
+		sa(p_list_a); // on arrange ca
+		ft_putendl("sa ");
+		}
+		*/
+		//push(p_list_a, p_list_b);
+		/*
+		   ft_putstr("liste a : ");
+		   dlist_display(p_list_a);
+		   ft_putstr("liste b : ");
+		   dlist_display(p_list_b);
+		   */
+		// faire un push de node et pas un push de t_dlist
+		// on decalle en pushant sur l'autre liste
+		// si on est sur la queue de la liste a on repush tout dans l'autre sens puis on verifie si l'ordre est ok
+		//ft_putnbr(tmp->data);
+		//ft_putchar('X');
+		//ft_putnbr(p_list_a->tail->data);
+		if (p_list_a->head->data < p_list_a->tail->data)
 		{
-			// on utilise sa si la valeur de la tail est inferieure a la valeur precedente
-			/*
-			if (p_list_a->tail->data > p_list_a->tail->prev->data)
-			{
-				// alors le dernier est plus grand que l'avant dernier
-				sa(p_list_a); // on arrange ca
-				ft_putendl("sa ");
-			}
-			*/
-			//push(p_list_a, p_list_b);
-			/*
+			ft_putstr("ra\n");
+			p_list_a = rotate_inverse(p_list_a); // c'est donc un ra
 			ft_putstr("liste a : ");
 			dlist_display(p_list_a);
 			ft_putstr("liste b : ");
 			dlist_display(p_list_b);
-			*/
-			// faire un push de node et pas un push de t_dlist
-			// on decalle en pushant sur l'autre liste
-			// si on est sur la queue de la liste a on repush tout dans l'autre sens puis on verifie si l'ordre est ok
-			//ft_putnbr(tmp->data);
-			ft_putchar('X');
-			ft_putnbr(p_list_a->tail->data);
-			if (p_list_a->length > 2 && p_list_a->tail->data > p_list_a->tail->prev->data)
-			{
-				sa(p_list_a);
-				ft_putstr("sa");
-			}
-			ft_putchar(' ');
-			push(p_list_a, p_list_b);
-			ft_putstr("pa");
-			tmp = tmp->prev;
 		}
-	color_str("=========================\n", "36;7");
+
+		if (p_list_a->length > 2 && p_list_a->tail->data > p_list_a->tail->prev->data)
+		{
+			sa(p_list_a);
+			ft_putstr("sa");
+			ft_putchar(' ');
+		}
+		else
+		{
+			push(p_list_a, p_list_b);
+			ft_putstr("pb ");
+		}
+		tmp = tmp->prev;
+	}
+	color_str("=========================\n", "33;7");
 	ft_putstr("liste a : ");
 	dlist_display(p_list_a);
 	ft_putstr("liste b : ");
 	dlist_display(p_list_b);
-	tmp = p_list_b->tail;
+
+	tmp = p_list_b->head;
 	while (tmp != NULL)
 	{
 		ft_putnbr(tmp->data);
-		push(p_list_b, p_list_a);
-			ft_putstr("pb");
-		tmp = tmp->prev;
+		dlist_append(p_list_a, tmp->data);
+		if (tmp->next != NULL)
+		{
+			color_str("if", "33");
+			dlist_remove(p_list_b, tmp->data);
+		}
+		else
+		{
+			color_str("else", "33");
+			p_list_b->tail = NULL;
+			p_list_b->head = NULL;
+			p_list_b->length--;
+			//p_list_b = NULL; // on detruit pas la liste cat on peut en avoir besoin au prochain tour
+		}
+		//ft_putstr("pa");
+		tmp = tmp->next;
 	}
+	//if (p_list_b->head->next == NULL)
 
-	//}
 	/*
 	color_str("===========copie sur la liste b==============\n", "36;7");
 	if (p_list_a->tail->data > p_list_a->tail->prev->data)
@@ -621,12 +645,18 @@ void		push_swap(t_dlist *p_list_a, t_dlist *p_list_b)
 	push(p_list_b, p_list_a);
 */
 
+	ft_putstr("ttttttttttttttt");
+	ft_putnbr(p_list_b->length);
+	ft_putstr("ttttttttttttttt");
 	if(p_list_b->length == 0)
 	{
 		if (verif_order(p_list_a))
 			color_str("ORDER OK\n", "32;7");
 		else
+		{
 			color_str("ORDER KO\n", "31;7");
+			push_swap(p_list_a, p_list_b);
+		}
 	}
 }
 
@@ -646,6 +676,8 @@ int			main(int ac, char **av)
 	while (i < ac)
 		list_a = dlist_prepend(list_a, ft_atoi(av[i++]));
 
+
+	color_str("ATTENTION : VERIFIER QU'IL N'Y A PAS DE DOUBLONS\n", "31;7");
 
 	/*
 	ft_putchar('\n');
