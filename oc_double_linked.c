@@ -566,10 +566,13 @@ void		push_swap(t_dlist *p_list_a, t_dlist *p_list_b)
 		//ft_putnbr(tmp->data);
 		//ft_putchar('X');
 		//ft_putnbr(p_list_a->tail->data);
+		//
+		/* est ce que le premier doit devenir le dernier ? */
 		if (p_list_a->head->data < p_list_a->tail->data)
 		{
-			ft_putstr("ra\n");
+			color_str("ra", "44;1");
 			p_list_a = rotate_inverse(p_list_a); // c'est donc un ra
+			ft_putchar('\n');
 			ft_putstr("liste a : ");
 			dlist_display(p_list_a);
 			ft_putstr("liste b : ");
@@ -579,7 +582,7 @@ void		push_swap(t_dlist *p_list_a, t_dlist *p_list_b)
 		if (p_list_a->length > 2 && p_list_a->tail->data > p_list_a->tail->prev->data)
 		{
 			sa(p_list_a);
-			ft_putstr("sa");
+			color_str("sa", "44;1");
 			ft_putchar(' ');
 		}
 		else
@@ -589,6 +592,7 @@ void		push_swap(t_dlist *p_list_a, t_dlist *p_list_b)
 		}
 		tmp = tmp->prev;
 	}
+
 	color_str("=========================\n", "33;7");
 	ft_putstr("liste a : ");
 	dlist_display(p_list_a);
@@ -596,6 +600,7 @@ void		push_swap(t_dlist *p_list_a, t_dlist *p_list_b)
 	dlist_display(p_list_b);
 
 	tmp = p_list_b->head;
+	color_str("remet tout sur la list a\n", "35");
 	while (tmp != NULL)
 	{
 		ft_putnbr(tmp->data);
@@ -614,6 +619,7 @@ void		push_swap(t_dlist *p_list_a, t_dlist *p_list_b)
 			//p_list_b = NULL; // on detruit pas la liste cat on peut en avoir besoin au prochain tour
 		}
 		//ft_putstr("pa");
+		ft_putstr("pa ");
 		tmp = tmp->next;
 	}
 	//if (p_list_b->head->next == NULL)
